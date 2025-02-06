@@ -1,5 +1,23 @@
 services:
+
   backend:
     build: .
     ports:
       - 8000:8000
+    depends_on:
+      - redis
+      - celery
+    container_name: weather_backend
+
+  redis:
+    image: redis:7.4.2-alpine
+    ports:
+      - 6379:6379
+    container_name: redis_broker
+  
+  celery:
+    build: .
+    container_name: celery_worker
+    command: ["celery", "-A", "celeryy", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
