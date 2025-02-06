@@ -6,21 +6,21 @@ class CitiesList(BaseModel):
     """
     Model for accepting list of cities.
     """
-    name: List[str]
+    cities: List[str]
 
 
 class TaskID(BaseModel):
     """
     Model for responding of task id.
     """
-    id: str
+    task_id: str
 
 
 class TaskStatus(BaseModel):
     """
     Model for responding of task status and link.
     """
-    id: str
+    task_id: str
     status: str
     result_url: Optional[str]
 
