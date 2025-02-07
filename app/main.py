@@ -1,11 +1,27 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from celery.result import AsyncResult
+import traceback
 
 from app.schemas import CitiesList, TaskID, TaskStatus, Weather
 from app.celeryy import celery_app
 from app.weather.utils import get_weather, get_weather_for_cities_in_region
+from app.logger import logger
+
 
 app = FastAPI()
+
+@app.middleware("http")
+async def log_exceptions_middleware(request: Request, call_next):
+    """
+    Middleware for logging.
+    """
+    try:
+        response = await call_next(request)
+        return response
+    except Exception as e:
+        error_message = f"URL: {request.url} - Exception: {str(e)}\n{traceback.format_exc()}"
+        logger.error(error_message)
+        raise e
 
 
 @app.post("/weather/")
