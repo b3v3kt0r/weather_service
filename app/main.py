@@ -75,5 +75,5 @@ async def get_weather_results(region: str):
     """
     Function that allows to get weather for cities in region.
     """
-    weather_data = get_weather_for_cities_in_region(region)
+    weather_data = await get_weather_for_cities_in_region(region)
     return Weather(region=region, results=weather_data)

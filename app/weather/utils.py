@@ -101,7 +101,7 @@ def get_weather(cities: list) -> dict | None:
     return {"result_url": result_url}
 
 
-def get_weather_for_cities_in_region(region: str):
+async def get_weather_for_cities_in_region(region: str):
     """
     Function that read information about weather for all cities in region.
     """
