@@ -9,6 +9,7 @@ from fastapi import HTTPException
 from celery import shared_task
 
 from app.schemas import CityWeather
+from app.logger import logger
 
 
 load_dotenv()
@@ -89,13 +90,13 @@ def get_weather(cities: list) -> dict | None:
                     result_url.append(path_to_file)
 
             except httpx.RequestError as e:
-                print(f"Network or HTTP error occurred: {e}")
+                logger.error("Network or HTTP error occurred: %s", e)
             except json.JSONDecodeError:
-                print("Error decoding JSON response.")
+                logger.error("Error decoding JSON response.")
             except KeyError as e:
-                print(f"Missing expected key in the response: {e}")
+                logger.error("Missing expected key in the response: %s", e)
             except Exception as e:
-                print(f"An unexpected error occurred: {e}")
+                logger.error("An unexpected error occurred: %s", e)
 
     return {"result_url": result_url}
 
