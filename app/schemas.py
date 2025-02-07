@@ -6,7 +6,7 @@ class CitiesList(BaseModel):
     """
     Model for accepting list of cities.
     """
-    cities: List[str]
+    cities: List[str] = []
 
 
 class TaskID(BaseModel):
@@ -22,7 +22,7 @@ class TaskStatus(BaseModel):
     """
     task_id: str
     status: str
-    result_url: Optional[str]
+    result_urls: Optional[List[str]]
 
 
 class CityWeather(BaseModel):
@@ -32,6 +32,14 @@ class CityWeather(BaseModel):
     city: str
     temperature: str
     description: str
+
+    def __eq__(self, other):
+        if isinstance(other, CityWeather):
+            return self.city == other.city
+        return False
+    
+    def __hash__(self):
+        return hash(self.city)
 
 
 class Weather(BaseModel):
