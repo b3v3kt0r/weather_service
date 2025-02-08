@@ -2,9 +2,10 @@ from fastapi import FastAPI, HTTPException, Request
 from celery.result import AsyncResult
 import traceback
 
-from app.schemas import CitiesList, TaskID, TaskStatus, Weather
-from app.celeryy import celery_app
-from app.weather.utils import get_weather, get_weather_for_cities_in_region
+from app.schemas import CitiesList, TaskID, TaskStatus, RegionWeather
+from app.celery_ import celery_app
+from app.weather.tasks import get_weather
+from app.weather.utils import get_weather_for_cities_in_region
 from app.logger import logger
 
 
@@ -29,11 +30,6 @@ async def send_list_of_city(cities: CitiesList):
     """
     Function that allows to send list of cities for processing.
     """
-    if not isinstance(cities.cities, list) or len(cities.cities) == 0:
-        raise HTTPException(
-            status_code=400,
-            detail="The cities parameter must be a non-empty list."
-        )
     task = get_weather.delay(cities.cities)
     return TaskID(task_id=task.id)
 
@@ -76,4 +72,4 @@ async def get_weather_results(region: str):
     Function that allows to get weather for cities in region.
     """
     weather_data = await get_weather_for_cities_in_region(region)
-    return Weather(region=region, results=weather_data)
+    return RegionWeather(region=region, results=weather_data)
