@@ -1,6 +1,7 @@
+import traceback
+
 from fastapi import FastAPI, HTTPException, Request
 from celery.result import AsyncResult
-import traceback
 
 from app.schemas import CitiesList, TaskID, TaskStatus, RegionWeather
 from app.celery_ import celery_app
