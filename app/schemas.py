@@ -10,6 +10,7 @@ class CitiesList(BaseModel):
     """
     Model for accepting a list of cities with validation.
     """
+
     cities: List[str]
 
     @field_validator("cities", mode="before")
@@ -32,6 +33,7 @@ class TaskID(BaseModel):
     """
     Model for responding of task id.
     """
+
     task_id: str
 
 
@@ -39,6 +41,7 @@ class TaskStatus(BaseModel):
     """
     Model for responding of task status and link.
     """
+
     task_id: str
     status: str
     result_urls: Optional[List[str]]
@@ -48,6 +51,7 @@ class CityWeather(BaseModel):
     """
     Model for responding of cities and weather.
     """
+
     city: str
     temperature: str
     description: str
@@ -65,5 +69,6 @@ class RegionWeather(BaseModel):
     """
     Model for responding weather, regions, cities.
     """
+
     region: str
     results: List[CityWeather]

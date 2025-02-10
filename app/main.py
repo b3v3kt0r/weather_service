@@ -12,6 +12,7 @@ from app.logger import logger
 
 app = FastAPI()
 
+
 @app.middleware("http")
 async def log_exceptions_middleware(request: Request, call_next):
     """
@@ -21,7 +22,9 @@ async def log_exceptions_middleware(request: Request, call_next):
         response = await call_next(request)
         return response
     except Exception as e:
-        error_message = f"URL: {request.url} - Exception: {str(e)}\n{traceback.format_exc()}"
+        error_message = (
+            f"URL: {request.url} - Exception: {str(e)}\n{traceback.format_exc()}"
+        )
         logger.error(error_message)
         raise e
 
@@ -48,22 +51,16 @@ async def get_task(task_id: str):
         if isinstance(result_urls, str):
             result_urls = [result_urls]
         return TaskStatus(
-            task_id=task_id,
-            status=task_res.state,
-            result_urls=result_urls
+            task_id=task_id, status=task_res.state, result_urls=result_urls
         )
 
     elif task_res.state == "FAILURE":
-        return TaskStatus(
-            task_id=task_id,
-            status=task_res.state,
-            result_url=None
-        )
+        return TaskStatus(task_id=task_id, status=task_res.state, result_urls=None)
 
     else:
         raise HTTPException(
             status_code=404,
-            detail=f"Task with id: {task_id} was not found or in progress"
+            detail=f"Task with id: {task_id} was not found or in progress",
         )
 
 

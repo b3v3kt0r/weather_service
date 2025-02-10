@@ -13,6 +13,7 @@ from app.providers import get_weather_service
 
 load_dotenv()
 
+
 def _translator_city_name_to_english(city: str):
     """
     Function that translates city name to English.

@@ -17,10 +17,12 @@ file_handler.setFormatter(formatter)
 
 logger.handlers = [console_handler, file_handler]
 
+
 @after_setup_logger.connect
 def setup_celery_logging(logger, **kwargs):
     logger.setLevel(logging.ERROR)
     logger.addHandler(file_handler)
+
 
 celery_logger = logging.getLogger("celery")
 celery_logger.addHandler(file_handler)
